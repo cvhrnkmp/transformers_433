@@ -678,9 +678,10 @@ class Trainer:
         self.current_flos = 0
         self.hp_search_backend = None
         self.use_tune_checkpoints = False
-        default_label_names = find_labels(self.model.__class__)
-        self.label_names = default_label_names if self.args.label_names is None else self.args.label_names
-        self.can_return_loss = can_return_loss(self.model.__class__)
+        if self.model is not None:
+            default_label_names = find_labels(self.model.__class__)
+            self.label_names = default_label_names if self.args.label_names is None else self.args.label_names
+            self.can_return_loss = can_return_loss(self.model.__class__)
         self.control = self.callback_handler.on_init_end(self.args, self.state, self.control)
 
         # Internal variables to help with automatic batch size reduction
