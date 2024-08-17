@@ -330,6 +330,7 @@ class Trainer:
         callbacks: Optional[List[TrainerCallback]] = None,
         optimizers: Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR] = (None, None),
         preprocess_logits_for_metrics: Optional[Callable[[torch.Tensor, torch.Tensor], torch.Tensor]] = None,
+        model_direct_init: Optional[bool] = True
     ):
         if args is None:
             output_dir = "tmp_trainer"
@@ -357,8 +358,9 @@ class Trainer:
 
         if model is None:
             if model_init is not None:
-                self.model_init = model_init
-                model = self.call_model_init()
+                if model_direct_init:
+                    self.model_init = model_init
+                    model = self.call_model_init()
             else:
                 raise RuntimeError("`Trainer` requires either a `model` or `model_init` argument")
         else:
