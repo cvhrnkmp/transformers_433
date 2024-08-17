@@ -682,6 +682,9 @@ class Trainer:
             default_label_names = find_labels(self.model.__class__)
             self.label_names = default_label_names if self.args.label_names is None else self.args.label_names
             self.can_return_loss = can_return_loss(self.model.__class__)
+        else:
+            self.label_names = None
+            self.can_return_loss = None
         self.control = self.callback_handler.on_init_end(self.args, self.state, self.control)
 
         # Internal variables to help with automatic batch size reduction
